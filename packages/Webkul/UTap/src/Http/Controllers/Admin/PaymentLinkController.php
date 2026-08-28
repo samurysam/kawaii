@@ -3,10 +3,14 @@
 namespace Webkul\UTap\Http\Controllers\Admin;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\UTap\DataGrids\PaymentLinkDataGrid;
+use Webkul\UTap\Mail\PaymentLinkReceiptMail;
 use Webkul\UTap\Models\PaymentLink;
 use Webkul\UTap\Repositories\PaymentLinkRepository;
 
@@ -92,6 +96,44 @@ class PaymentLinkController extends Controller
             ]);
         }
 
-        return view('utap::admin.payment-links.view', compact('paymentLink'));
+        return view('utap::admin.payment-links.view', compact('paymentLink', 'url', 'qrCodeUrl'));
+    }
+
+    public function resendReceipt(int $id): RedirectResponse
+    {
+        $paymentLink = $this->paymentLinkRepository->findOrFail($id);
+
+        try {
+            Mail::send(new PaymentLinkReceiptMail($paymentLink));
+            session()->flash('success', 'Automated Kawaii payment receipt emailed to '.$paymentLink->email.'! 📧💖');
+        } catch (\Throwable $e) {
+            Log::error('Failed to resend Payment Link email receipt: '.$e->getMessage());
+            session()->flash('error', 'Could not send email: '.$e->getMessage());
+        }
+
+        return redirect()->back();
+    }
+
+    public function markPaid(int $id): RedirectResponse
+    {
+        $paymentLink = $this->paymentLinkRepository->findOrFail($id);
+
+        $this->paymentLinkRepository->update([
+            'status' => PaymentLink::STATUS_COMPLETED,
+            'paid_at' => now(),
+            'utap_txn_id' => $paymentLink->utap_txn_id ?: 'MANUAL-ADMIN-'.time(),
+        ], $paymentLink->id);
+
+        $freshPayment = $this->paymentLinkRepository->find($paymentLink->id);
+
+        try {
+            Mail::send(new PaymentLinkReceiptMail($freshPayment));
+        } catch (\Throwable $e) {
+            Log::error('Failed to send Payment Link email receipt on markPaid: '.$e->getMessage());
+        }
+
+        session()->flash('success', 'Payment marked as Completed and confirmation email sent! 💖');
+
+        return redirect()->back();
     }
 }

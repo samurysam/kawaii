@@ -336,18 +336,6 @@
                     }
                 }
             });
-
-            // Global listener for datagrid action
-            document.addEventListener('click', (e) => {
-                const actionBtn = e.target.closest('a[href*="admin/sales/payment-links/view"]');
-                if (actionBtn) {
-                    e.preventDefault();
-                    const url = actionBtn.getAttribute('href');
-                    if (window.__paymentLinkDrawer) {
-                        window.__paymentLinkDrawer.open(url);
-                    }
-                }
-            });
         </script>
     @endPushOnce
 </x-admin::layouts>

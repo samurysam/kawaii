@@ -57,7 +57,9 @@ class PaymentLinkDataGrid extends DataGrid
             'searchable' => true,
             'sortable' => true,
             'closure' => function ($row) {
-                return '<span class="font-mono text-xs font-bold text-pink-600">#'.strtoupper($row->link_code).'</span>';
+                $url = route('admin.sales.payment_links.view', $row->id);
+
+                return '<a href="'.$url.'" class="font-mono text-xs font-bold text-pink-600 hover:underline hover:text-pink-700">#'.strtoupper($row->link_code).'</a>';
             },
         ]);
 
@@ -68,6 +70,11 @@ class PaymentLinkDataGrid extends DataGrid
             'searchable' => true,
             'sortable' => true,
             'filterable' => true,
+            'closure' => function ($row) {
+                $url = route('admin.sales.payment_links.view', $row->id);
+
+                return '<a href="'.$url.'" class="font-semibold text-gray-800 dark:text-white hover:text-pink-600">'.e($row->name).'</a>';
+            },
         ]);
 
         $this->addColumn([
