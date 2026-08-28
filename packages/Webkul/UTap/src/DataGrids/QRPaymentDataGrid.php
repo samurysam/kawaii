@@ -6,7 +6,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
 
-class PaymentLinkDataGrid extends DataGrid
+class QRPaymentDataGrid extends DataGrid
 {
     public function prepareQueryBuilder(): Builder
     {
@@ -26,7 +26,7 @@ class PaymentLinkDataGrid extends DataGrid
                 'payment_links.paid_at as paid_at',
                 'payment_links.created_at as created_at'
             )
-            ->where('payment_links.type', '=', 'admin_created');
+            ->where('payment_links.type', '=', 'public_qr');
 
         $this->addFilter('id', 'payment_links.id');
         $this->addFilter('link_code', 'payment_links.link_code');
@@ -52,12 +52,12 @@ class PaymentLinkDataGrid extends DataGrid
 
         $this->addColumn([
             'index' => 'link_code',
-            'label' => 'Code',
+            'label' => 'Receipt Ref',
             'type' => 'string',
             'searchable' => true,
             'sortable' => true,
             'closure' => function ($row) {
-                $url = route('admin.sales.payment_links.view', $row->id);
+                $url = route('admin.sales.qr_payments.view', $row->id);
 
                 return '<a href="'.$url.'" class="font-mono text-xs font-bold text-pink-600 hover:underline hover:text-pink-700">#'.strtoupper($row->link_code).'</a>';
             },
@@ -65,13 +65,13 @@ class PaymentLinkDataGrid extends DataGrid
 
         $this->addColumn([
             'index' => 'name',
-            'label' => 'Customer Name',
+            'label' => 'Payer Name',
             'type' => 'string',
             'searchable' => true,
             'sortable' => true,
             'filterable' => true,
             'closure' => function ($row) {
-                $url = route('admin.sales.payment_links.view', $row->id);
+                $url = route('admin.sales.qr_payments.view', $row->id);
 
                 return '<a href="'.$url.'" class="font-semibold text-gray-800 dark:text-white hover:text-pink-600">'.e($row->name).'</a>';
             },
@@ -87,8 +87,17 @@ class PaymentLinkDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
+            'index' => 'phone',
+            'label' => 'Phone',
+            'type' => 'string',
+            'searchable' => true,
+            'sortable' => true,
+            'filterable' => true,
+        ]);
+
+        $this->addColumn([
             'index' => 'amount',
-            'label' => 'Amount',
+            'label' => 'Amount Paid',
             'type' => 'string',
             'searchable' => true,
             'sortable' => true,
@@ -126,7 +135,7 @@ class PaymentLinkDataGrid extends DataGrid
 
         $this->addColumn([
             'index' => 'created_at',
-            'label' => 'Created Date',
+            'label' => 'Payment Date',
             'type' => 'datetime',
             'sortable' => true,
             'filterable' => true,
@@ -137,10 +146,10 @@ class PaymentLinkDataGrid extends DataGrid
     {
         $this->addAction([
             'icon' => 'icon-view',
-            'title' => 'View Details & QR',
+            'title' => 'View Full Details',
             'method' => 'GET',
             'url' => function ($row) {
-                return route('admin.sales.payment_links.view', $row->id);
+                return route('admin.sales.qr_payments.view', $row->id);
             },
         ]);
     }

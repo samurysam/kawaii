@@ -8,4 +8,11 @@ return [
         'sort' => 7,
         'icon' => '',
     ],
+    [
+        'key' => 'sales.qr_payments',
+        'name' => 'QR Payments',
+        'route' => 'admin.sales.qr_payments.index',
+        'sort' => 8,
+        'icon' => '',
+    ],
 ];
