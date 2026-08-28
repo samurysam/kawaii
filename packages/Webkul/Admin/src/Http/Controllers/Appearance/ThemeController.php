@@ -3,8 +3,8 @@
 namespace Webkul\Admin\Http\Controllers\Appearance;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Event;
-use Illuminate\View\View;
 use Prettus\Repository\Events\RepositoryEntityUpdated;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Core\Contracts\Channel;
@@ -24,17 +24,13 @@ class ThemeController extends Controller
     ) {}
 
     /**
-     * Display the theme gallery.
+     * Display the theme gallery or redirect to default theme sections.
      *
-     * @return View
+     * @return RedirectResponse
      */
     public function index()
     {
-        $themes = $this->themeCatalog->all();
-
-        $channels = $this->channelRepository->all();
-
-        return view('admin::appearance.themes.index', compact('themes', 'channels'));
+        return redirect()->route('admin.appearance.sections.index', ['code' => 'default']);
     }
 
     /**
