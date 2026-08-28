@@ -155,6 +155,68 @@ SVG;
         ];
     }
 
+    public function createPaymentLinkForPaymentModel($paymentLink): array
+    {
+        $invoiceId = 'UTAP-PL-'.$paymentLink->id.'-'.Str::upper(Str::random(6));
+        $requestId = $this->generateRequestId();
+        $login = $this->login();
+
+        if (! ($login['token'] ?? null)) {
+            return [
+                'ok' => false,
+                'message' => $login['message'] ?? trans('utap::app.response.payment-failed'),
+                'invoice_id' => $invoiceId,
+                'request_id' => $requestId,
+            ];
+        }
+
+        $payload = [
+            'versionNo' => 'VER4.0.0',
+            'invoice_id' => $invoiceId,
+            'refid' => $this->getReferenceId() ?: $this->getUserName(),
+            'SessionToken' => $login['token'],
+            'sessiontoken' => $login['token'],
+            'mobileNo' => $this->normalizePhone($paymentLink->phone),
+            'amount' => number_format((float) $paymentLink->amount, 2, '.', ''),
+            'custCode' => $this->getEffectiveCustomerCode(),
+            'Cust_GroupCustCode' => $this->getCustomerGroupCode() ?: $this->getEffectiveCustomerCode(),
+            'emailId' => $paymentLink->email ?? '',
+            'addlNote1' => 'Payment #'.$paymentLink->link_code,
+            'addlNote2' => substr(trim((string) $paymentLink->name), 0, 50),
+            'addlNote3' => substr(trim((string) $paymentLink->reason), 0, 50),
+            'addlNote4' => config('app.name'),
+            'callBackUrl' => route('payment_link.callback', ['linkCode' => $paymentLink->link_code]),
+            'requestId' => $requestId,
+            'linkValidity' => (string) ((int) ($this->getConfigData('link_validity') ?: 30)),
+            'Client_Code' => $this->getClientCode(),
+            'UserId' => $this->getUserName(),
+        ];
+
+        $response = Http::asJson()
+            ->acceptJson()
+            ->timeout(20)
+            ->post($this->endpoints()['payment_link'], $payload);
+
+        $json = $this->decodeJsonResponse($response->body());
+
+        $link = $json['SMSLink'] ?? null;
+        $txnId = $json['Txn_ID'] ?? null;
+        $ipgId = $this->extractIpgId($link);
+        $message = $json['ResponseMessage'] ?? ($link ? 'Success' : trans('utap::app.response.payment-failed'));
+
+        return [
+            'ok' => $response->successful() && ! empty($link),
+            'message' => $message,
+            'invoice_id' => $invoiceId,
+            'request_id' => $requestId,
+            'txn_id' => $txnId,
+            'ipg_id' => $ipgId,
+            'link' => $link,
+            'raw' => $json,
+            'login' => $login['raw'] ?? null,
+        ];
+    }
+
     public function checkPaymentStatus(string $ipgId): array
     {
         $login = $this->login();
