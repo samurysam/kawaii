@@ -1,0 +1,205 @@
+<!-- SEO Meta Content -->
+@push('meta')
+    <meta name="description" content="@lang('shop::app.customers.login-form.page-title')"/>
+
+    <meta name="keywords" content="@lang('shop::app.customers.login-form.page-title')"/>
+@endPush
+
+<x-shop::layouts
+    :has-header="false"
+    :has-feature="false"
+    :has-footer="false"
+>
+    <!-- Page Title -->
+    <x-slot:title>
+        @lang('shop::app.customers.login-form.page-title')
+    </x-slot>
+
+    <div class="container mt-12 pb-12 max-1180:px-5 max-md:mt-10">
+        {!! view_render_event('bagisto.shop.customers.login.logo.before') !!}
+
+        <!-- Company Logo -->
+        <div class="flex items-center gap-x-14 max-[1180px]:gap-x-9">
+            <a
+                href="{{ route('shop.home.index') }}"
+                class="m-[0_auto_20px_auto]"
+                aria-label="@lang('shop::app.customers.login-form.bagisto')"
+            >
+                <img
+                    src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
+                    alt="{{ core()->getCurrentChannel()->logo_alt ?: config('app.name') }}"
+                    width="131"
+                    height="29"
+                >
+            </a>
+        </div>
+
+        {!! view_render_event('bagisto.shop.customers.login.logo.after') !!}
+
+        <!-- Form Container -->
+        <div class="kb-form-card m-auto w-full max-w-[870px] p-16 px-[90px] max-md:px-8 max-md:py-8 max-sm:border-none max-sm:p-6">
+            <p class="kb-pill mb-5 inline-flex px-4 py-2 text-sm font-semibold">
+                Welcome back to Kawaii Blessings
+            </p>
+
+            <h1 class="kb-page-title max-md:text-3xl max-sm:text-[2rem]">
+                @lang('shop::app.customers.login-form.page-title')
+            </h1>
+
+            <p class="mt-4 max-w-[42rem] text-lg text-[#8A6772] max-sm:mt-2 max-sm:text-sm">
+                @lang('shop::app.customers.login-form.form-login-text')
+            </p>
+
+            {!! view_render_event('bagisto.shop.customers.login.before') !!}
+
+            <div class="mt-14 rounded max-sm:mt-8">
+                <x-shop::form :action="route('shop.customer.session.create')">
+                    {!! view_render_event('bagisto.shop.customers.login_form_controls.before') !!}
+
+                    <!-- Email -->
+                    <x-shop::form.control-group>
+                        <x-shop::form.control-group.label class="required">
+                            @lang('shop::app.customers.login-form.email')
+                        </x-shop::form.control-group.label>
+
+                        <x-shop::form.control-group.control
+                            type="email"
+                            class="px-6 py-4 max-md:py-3 max-sm:py-2"
+                            name="email"
+                            rules="required|email"
+                            value=""
+                            :label="trans('shop::app.customers.login-form.email')"
+                            placeholder="email@example.com"
+                            :aria-label="trans('shop::app.customers.login-form.email')"
+                            aria-required="true"
+                        />
+
+                        <x-shop::form.control-group.error control-name="email" />
+                    </x-shop::form.control-group>
+
+                    <!-- Password -->
+                    <x-shop::form.control-group>
+                        <x-shop::form.control-group.label class="required">
+                            @lang('shop::app.customers.login-form.password')
+                        </x-shop::form.control-group.label>
+
+                        <x-shop::form.control-group.control
+                            type="password"
+                            class="px-6 py-4 max-md:py-3 max-sm:py-2"
+                            id="password"
+                            name="password"
+                            rules="required|min:6"
+                            value=""
+                            :label="trans('shop::app.customers.login-form.password')"
+                            :placeholder="trans('shop::app.customers.login-form.password')"
+                            :aria-label="trans('shop::app.customers.login-form.password')"
+                            aria-required="true"
+                        />
+
+                        <x-shop::form.control-group.error control-name="password" />
+                    </x-shop::form.control-group>
+
+                    <div class="flex justify-between">
+                        <div class="flex select-none items-center gap-1.5">
+                            <input
+                                type="checkbox"
+                                id="show-password"
+                                class="peer hidden"
+                                onchange="switchVisibility()"
+                            />
+
+                            <label
+                                class="icon-uncheck peer-checked:icon-check-box cursor-pointer text-2xl text-[#ED6E98] peer-checked:text-[#ED6E98] max-sm:text-xl"
+                                for="show-password"
+                            ></label>
+
+                            <label
+                                class="cursor-pointer select-none text-base text-[#8A6772] max-sm:text-sm ltr:pl-0 rtl:pr-0"
+                                for="show-password"
+                            >
+                                @lang('shop::app.customers.login-form.show-password')
+                            </label>
+                        </div>
+
+                        <div class="block">
+                            <a
+                                href="{{ route('shop.customers.forgot_password.create') }}"
+                                class="cursor-pointer text-base text-[#5B3A45] hover:text-[#ED6E98] max-sm:text-sm"
+                            >
+                                <span>
+                                    @lang('shop::app.customers.login-form.forgot-pass')
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Captcha -->
+                    @if (core()->getConfigData('customer.captcha.credentials.status'))
+                        <x-shop::form.control-group class="mt-5">
+                            {!! \Webkul\Customer\Facades\Captcha::render() !!}
+
+                            <x-shop::form.control-group.error control-name="recaptcha_token" />
+                        </x-shop::form.control-group>
+                    @endif
+
+                    <!-- Submit Button -->
+                    <div class="mt-8 flex flex-wrap items-center gap-9 max-sm:justify-center max-sm:gap-5 max-sm:text-center">
+                        <button
+                            class="primary-button m-0 mx-auto block w-full max-w-[374px] rounded-2xl px-11 py-4 text-center text-base max-md:max-w-full max-md:rounded-lg max-md:py-3 max-sm:py-1.5 ltr:ml-0 rtl:mr-0"
+                            type="submit"
+                        >
+                            @lang('shop::app.customers.login-form.button-title')
+                        </button>
+                    </div>
+
+                    {!! view_render_event('bagisto.shop.customers.login_form_controls.after') !!}
+                </x-shop::form>
+            </div>
+
+            {!! view_render_event('bagisto.shop.customers.login.after') !!}
+
+            @if (
+                request()->cookie('enable-resend')
+                && request()->cookie('email-for-resend')
+            )
+                <p class="mt-5 font-medium text-[#8A6772] max-sm:text-center max-sm:text-sm">
+                    <a
+                        class="text-[#ED6E98]"
+                        href="{{ route('shop.customers.resend.verification_email', urlencode(request()->cookie('email-for-resend'))) }}"
+                    >
+                        @lang('shop::app.customers.login-form.resend-verification')
+                    </a>
+                </p>
+            @endif
+
+            <p class="mt-5 font-medium text-[#8A6772] max-sm:text-center max-sm:text-sm">
+                @lang('shop::app.customers.login-form.new-customer')
+
+                <a
+                    class="text-[#ED6E98]"
+                    href="{{ route('shop.customers.register.index') }}"
+                >
+                    @lang('shop::app.customers.login-form.create-your-account')
+                </a>
+            </p>
+        </div>
+
+        <p class="mb-4 mt-8 text-center text-xs text-[#8A6772]">
+            @lang('shop::app.customers.login-form.footer', ['current_year'=> date('Y') ])
+        </p>
+    </div>
+
+    @push('scripts')
+        {!! \Webkul\Customer\Facades\Captcha::renderJS() !!}
+
+        <script>
+            function switchVisibility() {
+                let passwordField = document.getElementById("password");
+
+                passwordField.type = passwordField.type === "password"
+                    ? "text"
+                    : "password";
+            }
+        </script>
+    @endpush
+</x-shop::layouts>

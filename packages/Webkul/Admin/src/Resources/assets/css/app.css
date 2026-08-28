@@ -1,0 +1,809 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "bagisto-admin";
+    src: url("../fonts/bagisto-admin.woff?jwnnow") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+:root {
+    --kb-bg-base: #fff6fa;
+    --kb-bg-soft: #fad9e5;
+    --kb-surface: #ffffff;
+    --kb-surface-muted: #fff9fc;
+    --kb-primary: #f58fb0;
+    --kb-primary-strong: #ed6e98;
+    --kb-primary-soft: #f9a8c2;
+    --kb-text: #5b3a45;
+    --kb-text-soft: #8a6772;
+    --kb-text-muted: #b08d98;
+    --kb-border: #f4c7d6;
+    --kb-border-strong: #efadc4;
+    --kb-info: #d9c8f3;
+    --kb-success: #ddf2e6;
+    --kb-warning: #fff1b8;
+    --kb-error: #e77c9b;
+    --kb-shadow-soft: 0 8px 24px rgba(237, 110, 152, 0.08);
+    --kb-shadow-hover: 0 12px 32px rgba(237, 110, 152, 0.14);
+    --kb-shadow-admin: 0 6px 18px rgba(91, 58, 69, 0.06);
+    --kb-gradient-soft: linear-gradient(135deg, #fff6fa 0%, #fad9e5 100%);
+    --kb-gradient-cta: linear-gradient(135deg, #f9a8c2 0%, #ed6e98 100%);
+    --kb-gradient-premium: linear-gradient(135deg, #ffffff 0%, #fff6fa 45%, #fad9e5 100%);
+}
+
+@layer components {
+    ::selection {
+        background: rgba(245, 143, 176, 0.35);
+    }
+
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(255, 255, 255, 0.92), transparent 28%),
+            radial-gradient(circle at top right, rgba(249, 168, 194, 0.18), transparent 20%),
+            var(--kb-gradient-soft);
+        color: var(--kb-text);
+        font-family: "Nunito Sans", "Poppins", sans-serif;
+    }
+
+    button:disabled {
+        @apply cursor-not-allowed opacity-50;
+    }
+
+    button:disabled:hover {
+        @apply cursor-not-allowed opacity-50;
+    }
+
+    .direction-ltr {
+        direction: ltr;
+    }
+
+    .direction-rtl {
+        direction: rtl;
+    }
+
+    .draggable-ghost {
+        background: rgba(217, 200, 243, 0.7);
+        opacity: 0.5;
+    }
+
+    /*
+     * The font-family is forced so a browser extension that overrides page fonts
+     * cannot replace the icons with letterforms, and the line-height with it, since
+     * an inherited one would knock the glyphs off their baseline.
+     */
+    [class^="icon-"],
+    [class*=" icon-"] {
+        @apply antialiased;
+        color: var(--kb-text-soft);
+
+        font-family: "bagisto-admin" !important;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        line-height: 1 !important;
+        text-transform: none;
+        speak: never;
+    }
+
+    .dark [class^="icon-"],
+    .dark [class*=" icon-"] {
+        color: #f9dbe5;
+    }
+
+    .box-shadow {
+        border: 1px solid var(--kb-border);
+        box-shadow: var(--kb-shadow-admin);
+    }
+
+    .icon-phone:before {
+        content: "\e94f";
+    }
+
+    .icon-list:before {
+        content: "\e950";
+    }
+
+    .icon-admin-export:before {
+        content: "\e95d";
+    }
+
+    .icon-magic:before {
+        content: "\e94b";
+    }
+
+    .icon-zoom:before {
+        content: "\e94c";
+    }
+
+    .icon-ar:before {
+        content: "\e94a";
+    }
+
+    .icon-report:before {
+        content: "\e942";
+    }
+
+    .icon-refund:before {
+        content: "\e948";
+    }
+
+    .icon-light:before {
+        content: "\e947";
+    }
+
+    .icon-dark:before {
+        content: "\e949";
+    }
+
+    .icon-checkbox-partical:before {
+        content: "\e900";
+    }
+
+    .icon-uncheckbox:before {
+        content: "\e901";
+    }
+
+    .icon-add-customer:before {
+        content: "\e902";
+    }
+
+    .icon-arrow-down:before {
+        content: "\e903";
+    }
+
+    .icon-arrow-left:before {
+        content: "\e904";
+    }
+
+    .icon-arrow-right:before {
+        content: "\e905";
+    }
+
+    .icon-arrow-up:before {
+        content: "\e906";
+    }
+
+    .icon-attribute-block:before {
+        content: "\e907";
+    }
+
+    .icon-attribute:before {
+        content: "\e908";
+    }
+
+    .icon-calendar:before {
+        content: "\e909";
+    }
+
+    .icon-cancel-1:before {
+        content: "\e90a";
+    }
+
+    .icon-cancel:before {
+        content: "\e90b";
+    }
+
+    .icon-cart:before {
+        content: "\e90c";
+    }
+
+    .icon-checked:before {
+        content: "\e90d";
+    }
+
+    .icon-cms:before {
+        content: "\e90e";
+    }
+
+    .icon-configuration:before {
+        content: "\e90f";
+    }
+
+    .icon-cross:before {
+        content: "\e910";
+    }
+
+    .icon-customer-2:before {
+        content: "\e911";
+    }
+
+    .icon-customer:before {
+        content: "\e912";
+    }
+
+    .icon-dashboard:before {
+        content: "\e913";
+    }
+
+    .icon-delete:before {
+        content: "\e914";
+    }
+
+    .icon-done:before {
+        content: "\e915";
+    }
+
+    .icon-dot:before {
+        content: "\e916";
+    }
+
+    .icon-dots:before {
+        content: "\e917";
+    }
+
+    .icon-down-stat:before {
+        content: "\e918";
+    }
+
+    .icon-drag:before {
+        content: "\e919";
+    }
+
+    .icon-edit-save:before {
+        content: "\e91a";
+    }
+
+    .icon-edit:before {
+        content: "\e91b";
+    }
+
+    .icon-filter:before {
+        content: "\e91c";
+    }
+
+    .icon-folder-block:before {
+        content: "\e91d";
+    }
+
+    .icon-folder:before {
+        content: "\e91e";
+    }
+
+    .icon-image:before {
+        content: "\e91f";
+    }
+
+    .icon-information:before {
+        content: "\e920";
+    }
+
+    .icon-language:before {
+        content: "\e921";
+    }
+
+    .icon-location:before {
+        content: "\e922";
+    }
+
+    .icon-mail:before {
+        content: "\e923";
+    }
+
+    .icon-menu:before {
+        content: "\e924";
+    }
+
+    .icon-notification:before {
+        content: "\e925";
+    }
+
+    .icon-order-back:before {
+        content: "\e926";
+    }
+
+    .icon-printer:before {
+        content: "\e927";
+    }
+
+    .icon-processing:before {
+        content: "\e928";
+    }
+
+    .icon-product-1:before {
+        content: "\e929";
+    }
+
+    .icon-product:before {
+        content: "\e92a";
+    }
+
+    .icon-promotion:before {
+        content: "\e92b";
+    }
+
+    .icon-radio-normal:before {
+        content: "\e92c";
+    }
+
+    .icon-radio-selected:before {
+        content: "\e92d";
+    }
+
+    .icon-repeat:before {
+        content: "\e92e";
+    }
+
+    .icon-sales:before {
+        content: "\e92f";
+    }
+
+    .icon-search:before {
+        content: "\e930";
+    }
+
+    .icon-setting:before {
+        content: "\e931";
+    }
+
+    .icon-settings:before {
+        content: "\e932";
+    }
+
+    .icon-ship:before {
+        content: "\e933";
+    }
+
+    .icon-sort-down:before {
+        content: "\e934";
+    }
+
+    .icon-sort-left:before {
+        content: "\e935";
+    }
+
+    .icon-sort-right:before {
+        content: "\e936";
+    }
+
+    .icon-sort-up-down:before {
+        content: "\e937";
+    }
+
+    .icon-sort-up:before {
+        content: "\e938";
+    }
+
+    .icon-star:before {
+        content: "\e939";
+    }
+
+    .icon-store:before {
+        content: "\e93a";
+    }
+
+    .icon-tick:before {
+        content: "\e93b";
+    }
+
+    .icon-up-stat:before {
+        content: "\e93c";
+    }
+
+    .icon-view:before {
+        content: "\e93d";
+    }
+
+    .icon-view-close:before {
+        content: "\e946";
+    }
+
+    .icon-copy:before {
+        content: "\e93e";
+    }
+
+    .icon-exit:before {
+        content: "\e93f";
+    }
+
+    .icon-clip:before {
+        content: "\e940";
+    }
+
+    .icon-collapse:before {
+        content: "\e941";
+    }
+
+    .icon-login:before {
+        content: "\e943";
+    }
+
+    .icon-pause:before {
+        content: "\e944";
+    }
+
+    .icon-play:before {
+        content: "\e945";
+    }
+
+    p {
+        @apply text-[14px] !leading-[20px];
+        color: var(--kb-text-soft);
+    }
+
+    input,
+    textarea,
+    select {
+        @apply outline-none;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--kb-border);
+        border-radius: 16px;
+        color: var(--kb-text);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: var(--kb-primary);
+        box-shadow: 0 0 0 4px rgba(245, 143, 176, 0.18);
+    }
+
+    .primary-button {
+        @apply cursor-pointer flex font-semibold gap-x-1 items-center place-content-center px-3.5 py-2 transition-all;
+        background: var(--kb-gradient-cta);
+        border: 1px solid rgba(237, 110, 152, 0.55);
+        border-radius: 999px;
+        box-shadow: 0 8px 22px rgba(237, 110, 152, 0.16);
+        color: #fff;
+    }
+
+    .secondary-button {
+        @apply flex cursor-pointer place-content-center items-center gap-x-1 whitespace-nowrap px-3.5 py-2 font-semibold transition-all;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--kb-border-strong);
+        border-radius: 999px;
+        color: var(--kb-primary-strong);
+    }
+
+    .transparent-button {
+        @apply flex cursor-pointer appearance-none place-content-center items-center gap-x-1 whitespace-nowrap px-3 py-1.5 font-semibold transition-all marker:shadow;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        color: var(--kb-text-soft);
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover,
+    .transparent-button:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--kb-shadow-hover);
+    }
+
+    .journal-scroll::-webkit-scrollbar {
+        width: 14px;
+        cursor: pointer;
+        display: none;
+    }
+
+    /*
+     * #e9e9e9 is not on the palette — it is the scrollbar's own grey.
+     */
+    .journal-scroll::-webkit-scrollbar-track {
+        @apply cursor-pointer rounded-xl bg-white;
+        border-color: var(--kb-border);
+    }
+
+    .journal-scroll::-webkit-scrollbar-thumb {
+        @apply cursor-pointer rounded-xl border-[3px] border-transparent bg-clip-content;
+        background-color: #efdae2;
+    }
+
+    .custom-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background: transparent;
+        background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+        background-repeat: no-repeat;
+        background-position-x: calc(100% - 10px);
+        background-position-y: 50%;
+    }
+
+    .dark .custom-select {
+        background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    }
+
+    [dir="rtl"] .custom-select {
+        background-position-x: calc(100% - (100% - 10px));
+    }
+
+    .label-pending,
+    .label-processing,
+    .label-closed,
+    .label-canceled,
+    .label-info,
+    .label-fraud,
+    .label-pending_payment,
+    .label-completed,
+    .label-active {
+        @apply text-[12px] font-semibold py-px px-2 max-w-max rounded-[999px];
+        color: var(--kb-text);
+    }
+
+    .label-pending,
+    .label-pending_payment {
+        background: var(--kb-warning);
+    }
+
+    .label-processing {
+        background: #fce6ee;
+    }
+
+    .label-completed,
+    .label-active {
+        background: var(--kb-success);
+    }
+
+    .label-closed {
+        background: var(--kb-info);
+    }
+
+    .label-canceled,
+    .label-fraud {
+        background: #ffd9e3;
+    }
+
+    .label-info {
+        background: var(--kb-info);
+    }
+
+    /*
+     * Status text colours.
+     */
+    .status-enable {
+        color: #5b8a6b;
+    }
+
+    .status-disable {
+        color: #b85d78;
+    }
+
+    /*
+     * #ffb600 is the rating gold — not a palette colour.
+     */
+    .icon-star-fill:before {
+        @apply text-[#ffb600];
+
+        content: "\e938";
+    }
+
+    .shimmer {
+        animation-duration: 2.2s;
+        animation-fill-mode: forwards;
+        animation-iteration-count: infinite;
+        animation-name: skeleton;
+        animation-timing-function: linear;
+        background: linear-gradient(
+            to right,
+            #f6f6f6 8%,
+            #f0f0f0 18%,
+            #f6f6f6 33%
+        );
+        background-size: 1250px 100%;
+    }
+
+    .dark .shimmer {
+        background: linear-gradient(
+            to right,
+            #1f2937 8%,
+            #1a2232 18%,
+            #1f2937 33%
+        );
+    }
+
+    @keyframes skeleton {
+        0% {
+            @apply bg-[-1250px_0];
+        }
+
+        100% {
+            @apply bg-[1250px_0];
+        }
+    }
+
+    .required:after {
+        @apply content-['*'];
+    }
+
+    .CodeMirror {
+        @apply !h-[calc(100vh-367px)];
+    }
+
+    .kb-admin-shell {
+        background:
+            radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 26%),
+            radial-gradient(circle at top right, rgba(249, 168, 194, 0.15), transparent 18%),
+            var(--kb-gradient-soft);
+    }
+
+    .kb-admin-panel {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid var(--kb-border);
+        border-radius: 24px;
+        box-shadow: var(--kb-shadow-admin);
+        backdrop-filter: blur(10px);
+    }
+
+    .kb-admin-card {
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid var(--kb-border);
+        border-radius: 20px;
+        box-shadow: var(--kb-shadow-admin);
+    }
+
+    .kb-admin-title {
+        font-family: "Fredoka", "Baloo 2", cursive;
+        color: var(--kb-text);
+        letter-spacing: 0.01em;
+    }
+}
+
+.tox .tox-toolbar__group:last-child button {
+    background: #fff4f8;
+    color: var(--kb-primary-strong);
+    padding: 0.375rem 0.5rem;
+}
+
+.tox .tox-toolbar__group:last-child button:hover {
+    background: #fde7ef;
+}
+
+.tox .tox-toolbar__group:last-child button[aria-disabled="true"] {
+    @apply cursor-not-allowed opacity-50;
+}
+
+/*
+ * Datagrid mobile Filter | Sort bar.
+ *
+ * The datagrid toolbar's `.dg-fsbar` row is lifted into a bar fixed to the foot of the screen on
+ * mobile — a FILTER | SORT strip — so the toolbar above keeps just two rows. `.dg-fsbar` lives only
+ * in the datagrid toolbar, so nothing else on the page is affected, and it reverts to an inline row
+ * above md.
+ */
+@media (max-width: 767px) {
+    /*
+     * The z-index matches the sticky header's, so a drawer opened from the bar paints
+     * above it rather than behind.
+     */
+    .dg-fsbar {
+        @apply fixed bottom-0 start-0 end-0 z-[10001] flex w-full items-center gap-0 border-t border-gray-200 bg-white;
+    }
+
+    .dark .dg-fsbar {
+        @apply border-gray-800 bg-gray-900;
+    }
+
+    .dg-fsbar-filter {
+        @apply flex flex-1 justify-center;
+    }
+
+    /*
+     * Recasts the filter button — the div holding the funnel icon — as a borderless
+     * full-width tab.
+     *
+     * Written as a selector rather than utilities because that div belongs to the
+     * filter component's own markup, which this file does not own: styling it with
+     * utilities would mean editing that component and threading a prop down to it.
+     * The `!important`s are for the same reason — they override the utilities the
+     * component sets on itself.
+     */
+    .dg-fsbar-filter div:has(> .icon-filter) {
+        @apply !w-full !max-w-none !justify-center !border-0 !bg-transparent !py-3.5 uppercase;
+    }
+
+    .dg-fsbar-sep {
+        @apply block h-5 w-px bg-gray-200;
+    }
+
+    .dark .dg-fsbar-sep {
+        @apply bg-gray-700;
+    }
+
+    .dg-fsbar-sort {
+        @apply flex flex-1 justify-center;
+    }
+
+    /*
+     * Lifts the page so the fixed bar never covers the last rows.
+     *
+     * Has to be a selector: it styles an ancestor, and a utility only ever styles the
+     * element that carries it.
+     */
+    body:has(.dg-fsbar) {
+        @apply pb-16;
+    }
+}
+
+/*
+ * Datagrid header row.
+ *
+ * The look every datagrid header shares. A datagrid that renders its own header —
+ * to group columns into cards, say — reuses this instead of restating the utilities,
+ * so a customized grid cannot drift away from the default one. Only the grid
+ * template stays with each grid, since that is the part which legitimately differs.
+ */
+@layer components {
+    .datagrid-head {
+        @apply min-h-[47px] items-center gap-2.5 border-b bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300;
+    }
+}
+
+/*
+ * A header belonging to a grid that becomes cards on small screens. There it is
+ * dropped entirely: the labels describe columns that no longer exist once the row
+ * has collapsed into a card, and sorting is reachable from the bottom Filter | Sort
+ * bar instead.
+ *
+ * It has to live in the utilities layer, not components: the header also carries
+ * `grid`, and utilities are emitted after components — so a `display: none` set in
+ * the components layer loses to `display: grid` at equal specificity.
+ */
+@layer utilities {
+    .datagrid-head-cards {
+        @apply max-md:hidden;
+    }
+}
+
+/*
+ * Datagrid rows as cards on small screens.
+ *
+ * A grid whose columns are fixed reads fine on a desktop and terribly on a phone,
+ * where it can only be reached by scrolling sideways. Adding `datagrid-card` to the
+ * row collapses it to a single column below md and labels each cell from its own
+ * `data-label`, so the row becomes a self-describing card — which is what lets the
+ * header above it be dropped entirely.
+ *
+ * The label comes from an attribute rather than extra markup so the desktop layout
+ * is untouched: above md none of this applies and the row is still the same grid.
+ */
+@media (max-width: 767px) {
+    .datagrid-card {
+        @apply gap-2.5 py-4;
+
+        /*
+         * `!important` because several grids set their column template as an inline
+         * style, which no class can otherwise beat.
+         */
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    /*
+     * A selector rather than utilities: it targets cells by the `data-label` they
+     * carry, which is what keeps the label out of the markup entirely.
+     */
+    .datagrid-card > [data-label] {
+        @apply grid min-w-0 grid-cols-[6.5rem_minmax(0,1fr)] items-start gap-3;
+    }
+
+    .datagrid-card > [data-label]::before {
+        @apply text-xs font-medium uppercase leading-5 tracking-wide text-gray-400;
+
+        /*
+         * Tailwind has no utility for a generated attribute value.
+         */
+        content: attr(data-label);
+    }
+
+    .dark .datagrid-card > [data-label]::before {
+        @apply text-gray-500;
+    }
+
+    /*
+     * Actions sit on their own line, aligned to the row's trailing edge. Kept as a
+     * flex row rather than the labelled grid above, so the buttons stay side by side
+     * instead of stacking, and with no label — the icons speak for themselves.
+     */
+    .datagrid-card > [data-label="actions"] {
+        @apply flex items-center justify-end;
+    }
+
+    .datagrid-card > [data-label="actions"]::before {
+        /*
+         * Suppresses the generated label above — again, no utility for content.
+         */
+        content: none;
+    }
+}

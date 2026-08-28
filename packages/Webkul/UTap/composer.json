@@ -1,0 +1,16 @@
+{
+    "name": "webkul/utap",
+    "description": "Bagisto uTap by e& payment gateway",
+    "autoload": {
+        "psr-4": {
+            "Webkul\\UTap\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\UTap\\Providers\\UTapServiceProvider"
+            ]
+        }
+    }
+}
