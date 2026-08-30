@@ -29,7 +29,7 @@
     >
     <meta 
         name="generator" 
-        content="Bagisto"
+        content="Kawaii Blessings powered by KeynoStore"
     >
 
     @stack('meta')

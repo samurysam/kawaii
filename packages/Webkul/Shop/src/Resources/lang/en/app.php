@@ -5,7 +5,7 @@ return [
         'forgot-password' => [
             'already-sent' => 'Already Password Reset Mail Sent.',
             'back' => 'Back to sign In ?',
-            'bagisto' => 'Bagisto',
+            'bagisto' => 'Kawaii Blessings',
             'email' => 'Email',
             'email-not-exist' => 'We cannot find a user with that email address.',
             'footer' => '© Copyright 2026. Kawaii Blessings All rights reserved.<br>webstore Powered by KeynoStore by KeynoTech',
@@ -19,7 +19,7 @@ return [
 
         'reset-password' => [
             'back-link-title' => 'Back to Sign In',
-            'bagisto' => 'Bagisto',
+            'bagisto' => 'Kawaii Blessings',
             'confirm-password' => 'Confirm Password',
             'email' => 'Registered Email',
             'footer' => '© Copyright 2026. Kawaii Blessings All rights reserved.<br>webstore Powered by KeynoStore by KeynoTech',
@@ -29,7 +29,7 @@ return [
         ],
 
         'login-form' => [
-            'bagisto' => 'Bagisto',
+            'bagisto' => 'Kawaii Blessings',
             'button-title' => 'Sign In',
             'create-your-account' => 'Create your account',
             'email' => 'Email',
@@ -49,7 +49,7 @@ return [
 
         'signup-form' => [
             'account-exists' => 'Already have an account ?',
-            'bagisto' => 'Bagisto',
+            'bagisto' => 'Kawaii Blessings',
             'button-title' => 'Register',
             'click-here' => 'Click Here',
             'confirm-pass' => 'Confirm Password',
@@ -564,7 +564,7 @@ return [
                     'bottom' => [
                         'all' => 'All',
                         'back-button' => 'Back to Main Menu',
-                        'bagisto' => 'Bagisto',
+                        'bagisto' => 'Kawaii Blessings',
                         'categories' => 'Categories',
                         'compare' => 'Compare',
                         'dropdown-text' => 'Manage Cart, Orders & Wishlist',
@@ -585,7 +585,7 @@ return [
                 'mobile' => [
                     'account' => 'Account',
                     'back-button' => 'Back to Main Menu',
-                    'bagisto' => 'Bagisto',
+                    'bagisto' => 'Kawaii Blessings',
                     'compare' => 'Compare',
                     'currencies' => 'Currencies',
                     'dropdown-text' => 'Manage Cart, Orders & Wishlist',
@@ -1078,7 +1078,7 @@ return [
             'suspended-account-message' => 'Your account has been suspended.',
 
             'index' => [
-                'bagisto' => 'Bagisto',
+                'bagisto' => 'Kawaii Blessings',
                 'cart' => 'Cart',
                 'continue-shopping' => 'Continue Shopping',
                 'empty-product' => 'You don’t have a product in your cart.',

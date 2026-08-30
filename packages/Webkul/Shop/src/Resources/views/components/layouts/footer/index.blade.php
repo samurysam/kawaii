@@ -587,7 +587,7 @@
         <p class="kb-footer-copyright">
             <span>© {{ date('Y') }} Kawaii Blessings. All rights reserved. 🎀</span>
             <span class="kb-footer-powered">
-                E-Store Powered by <a href="https://keynostore.com" target="_blank" rel="noopener">KeynoStore</a>
+                Kawaii Blessings powered by <a href="https://keynostore.com" target="_blank" rel="noopener">KeynoStore</a>
             </span>
         </p>
 
