@@ -81,6 +81,18 @@ Route::get('categories', [HomeController::class, 'categories'])
     ->middleware('cache.response');
 
 /**
+ * Collection shortcuts and redirects.
+ */
+Route::get('new-arrivals', fn () => redirect()->route('shop.search.index', ['sort' => 'created_at-desc']));
+Route::get('best-sellers', fn () => redirect()->route('shop.search.index', ['sort' => 'created_at-desc']));
+Route::get('sale', fn () => redirect()->route('shop.search.index', ['sort' => 'price-asc']));
+Route::get('stationery', fn () => redirect('/lifestyle-accessories', 301));
+Route::get('accessories', fn () => redirect('/lifestyle-accessories', 301));
+Route::get('lifestyle', fn () => redirect('/lifestyle-accessories', 301));
+Route::get('gifts', fn () => redirect('/blind-box', 301));
+Route::get('all-categories', fn () => redirect('/categories', 301));
+
+/**
  * Appearance editor preview, never cached.
  *
  * The path must stay one segment deep: storefront markup emits relative asset urls such

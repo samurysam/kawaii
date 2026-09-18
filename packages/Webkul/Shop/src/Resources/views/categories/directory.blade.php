@@ -45,35 +45,61 @@
 
     <!-- Categories Grid -->
     <div class="container my-10 px-[60px] max-lg:px-8 max-sm:px-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @forelse ($categories as $category)
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+            @forelse ($categories as $index => $category)
+                @php
+                    $catImg = $category->logo_url
+                        ?: ($category->banner_url
+                        ?: ($category->products->first()?->images->first()?->url ?? ($category->products->first()?->base_image_url ?? '')));
+                    $prodCount = $category->products()->count();
+                @endphp
                 <a
                     href="{{ url($category->slug) }}"
-                    class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#f0d5dd] bg-white p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#ef789f] hover:shadow-[0_12px_30px_rgba(239,120,159,0.18)]"
+                    class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#f0d5dd] bg-white p-4 md:p-5 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#ef789f] hover:shadow-[0_12px_30px_rgba(239,120,159,0.18)]"
                 >
                     <div>
-                        <div class="flex items-center justify-between">
-                            <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#fff0f5] text-[#ef789f] text-lg font-bold transition-transform duration-300 group-hover:scale-110">
-                                ♡
+                        <!-- Thumbnail Image Container -->
+                        <div class="relative aspect-square w-full overflow-hidden rounded-xl bg-gradient-to-b from-[#fff8fa] to-[#fff0f5] flex items-center justify-center p-3 border border-[#fae4ec]">
+                            <!-- Number Badge -->
+                            <span class="absolute top-2.5 left-2.5 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[10px] font-bold text-[#ef789f] shadow-sm">
+                                {{ sprintf('%02d', $index + 1) }}
                             </span>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#ef789f]/80">
-                                Collection
-                            </span>
+
+                            @if ($prodCount > 0)
+                                <span class="absolute top-2.5 right-2.5 z-10 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-medium text-[#80616a] shadow-sm">
+                                    {{ $prodCount }} items
+                                </span>
+                            @endif
+
+                            @if ($catImg)
+                                <img
+                                    src="{{ $catImg }}"
+                                    alt="{{ $category->name }}"
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110"
+                                />
+                            @else
+                                <div class="flex flex-col items-center justify-center text-[#ef789f]">
+                                    <span class="text-3xl font-bold">♡</span>
+                                    <span class="mt-1 text-[11px] font-medium text-[#80616a]">Collection</span>
+                                </div>
+                            @endif
                         </div>
 
-                        <h2 class="mt-5 text-lg font-bold text-[#4a2e35] transition-colors group-hover:text-[#ef789f]">
+                        <h2 class="mt-4 text-base md:text-lg font-bold text-[#4a2e35] transition-colors group-hover:text-[#ef789f] text-center md:text-left">
                             {{ $category->name }}
                         </h2>
 
                         @if ($category->description)
-                            <p class="mt-2 text-xs leading-relaxed text-[#80616a] line-clamp-3">
+                            <p class="mt-1.5 text-xs leading-relaxed text-[#80616a] line-clamp-2 hidden md:block">
                                 {{ strip_tags($category->description) }}
                             </p>
                         @endif
                     </div>
 
-                    <div class="mt-6 flex items-center justify-between border-t border-[#fce8ef] pt-4 text-xs font-semibold text-[#ef789f]">
-                        <span>Explore Collection</span>
+                    <div class="mt-4 flex items-center justify-between border-t border-[#fce8ef] pt-3 text-xs font-semibold text-[#ef789f]">
+                        <span>Explore</span>
                         <span class="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
                     </div>
                 </a>

@@ -107,4 +107,21 @@ class ShopifyProductImportTest extends TestCase
         $this->assertStringContainsString('repeat(4, minmax(0, 1fr))', $section->options);
         $this->assertStringContainsString('limit=16', $section->options);
     }
+
+    /**
+     * Test shortcuts and CMS page aliases.
+     */
+    public function test_footer_shortcuts_and_cms_aliases(): void
+    {
+        $this->get('/new-arrivals')->assertRedirect();
+        $this->get('/best-sellers')->assertRedirect();
+        $this->get('/sale')->assertRedirect();
+        $this->get('/stationery')->assertRedirect('/lifestyle-accessories');
+        $this->get('/gifts')->assertRedirect('/blind-box');
+
+        $this->get('/page/authenticity-guarantee')->assertStatus(200);
+        $this->get('/page/size-guide')->assertStatus(200);
+        $this->get('/page/privacy-policy')->assertStatus(200);
+        $this->get('/page/terms-conditions')->assertStatus(200);
+    }
 }
