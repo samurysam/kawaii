@@ -70,6 +70,10 @@ class ImportShopifyProducts extends Command
         CategoryRepository $categoryRepository,
         FlatIndexer $flatIndexer
     ): int {
+        @ini_set('memory_limit', '1024M');
+        @set_time_limit(0);
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
         $filePath = $this->option('file') ?: '/Users/samerkhan/Downloads/https___kawaiiblessings_ae__shopify.csv';
 
         if (! file_exists($filePath)) {
@@ -92,14 +96,21 @@ class ImportShopifyProducts extends Command
 
         $importedCount = 0;
         $imagesCount = 0;
+        $failedCount = 0;
 
         foreach ($productsData as $handle => $productData) {
-            $product = $this->importSingleProduct($productRepository, $productData, $categoryMap);
+            try {
+                $product = $this->importSingleProduct($productRepository, $productData, $categoryMap);
 
-            if ($product) {
-                $downloadedImages = $this->downloadAndAttachImages($product->id, $productData['images']);
-                $imagesCount += $downloadedImages;
-                $importedCount++;
+                if ($product) {
+                    $downloadedImages = $this->downloadAndAttachImages($product->id, $productData['images']);
+                    $imagesCount += $downloadedImages;
+                    $importedCount++;
+                }
+            } catch (\Throwable $e) {
+                $failedCount++;
+                $this->newLine();
+                $this->warn("Skipped product '{$handle}': {$e->getMessage()}");
             }
 
             $progressBar->advance();
@@ -109,10 +120,14 @@ class ImportShopifyProducts extends Command
         $this->newLine(2);
 
         $this->info('3. Re-indexing catalog (Flat, Price, Inventory)...');
-        $flatIndexer->reindexFull();
-        $this->call('indexer:index');
+        try {
+            $flatIndexer->reindexFull();
+            $this->call('indexer:index');
+        } catch (\Throwable $e) {
+            $this->warn("Indexing warning: {$e->getMessage()}");
+        }
 
-        $this->info("Successfully imported {$importedCount} products and saved {$imagesCount} local images.");
+        $this->info("Successfully imported {$importedCount} products and saved {$imagesCount} local images. (Failed/Skipped: {$failedCount})");
 
         return self::SUCCESS;
     }
