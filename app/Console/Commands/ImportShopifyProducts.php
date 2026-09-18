@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -59,7 +60,7 @@ class ImportShopifyProducts extends Command
         'kirby-collection' => ['kirby'],
         'sailor-moon-collection' => ['sailor moon'],
         'shirts' => ['shirt', 'shirts', 't-shirt'],
-        'lifestyle-accessories' => ['lamp', 'night light', 'camera', 'digicam', 'bath bomb', 'diary book', 'magnet'],
+        'lifestyle-accessories' => ['lifestyle', 'accessories', 'lamp', 'night light', 'camera', 'digicam', 'bath bomb', 'diary book', 'magnet'],
     ];
 
     /**
@@ -73,6 +74,12 @@ class ImportShopifyProducts extends Command
         @ini_set('memory_limit', '1024M');
         @set_time_limit(0);
         error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
+        File::ensureDirectoryExists(storage_path('framework/cache/data'));
+        File::ensureDirectoryExists(storage_path('framework/sessions'));
+        File::ensureDirectoryExists(storage_path('framework/views'));
+        File::ensureDirectoryExists(storage_path('app/public/product'));
+        File::ensureDirectoryExists(storage_path('logs'));
 
         $filePath = $this->option('file') ?: '/Users/samerkhan/Downloads/https___kawaiiblessings_ae__shopify.csv';
 
