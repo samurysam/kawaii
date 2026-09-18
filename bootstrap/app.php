@@ -11,6 +11,29 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
 use Webkul\Core\Http\Middleware\SecureHeaders;
 use Webkul\Installer\Http\Middleware\CanInstall;
 
+if (! function_exists('mb_split')) {
+    function mb_split(string $pattern, string $string, int $limit = -1): array|false
+    {
+        $delimiter = '/';
+        $escaped = str_replace($delimiter, '\\'.$delimiter, $pattern);
+        $result = preg_split($delimiter.$escaped.$delimiter.'u', $string, $limit);
+
+        return $result !== false ? $result : false;
+    }
+}
+
+if (! function_exists('mb_ereg_replace')) {
+    function mb_ereg_replace(string $pattern, string $replacement, string $string, ?string $options = null): string|false
+    {
+        $delimiter = '/';
+        $escaped = str_replace($delimiter, '\\'.$delimiter, $pattern);
+        $modifiers = 'u'.(str_contains((string) $options, 'i') ? 'i' : '');
+        $result = preg_replace($delimiter.$escaped.$delimiter.$modifiers, $replacement, $string);
+
+        return $result !== null ? $result : false;
+    }
+}
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

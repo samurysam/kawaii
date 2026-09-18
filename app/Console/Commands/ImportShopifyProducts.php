@@ -12,6 +12,17 @@ use Webkul\Product\Helpers\Indexers\Flat as FlatIndexer;
 use Webkul\Product\Models\ProductImage;
 use Webkul\Product\Repositories\ProductRepository;
 
+if (! function_exists('mb_split')) {
+    function mb_split(string $pattern, string $string, int $limit = -1): array|false
+    {
+        $delimiter = '/';
+        $escaped = str_replace($delimiter, '\\'.$delimiter, $pattern);
+        $result = preg_split($delimiter.$escaped.$delimiter.'u', $string, $limit);
+
+        return $result !== false ? $result : false;
+    }
+}
+
 class ImportShopifyProducts extends Command
 {
     /**
