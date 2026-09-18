@@ -28,7 +28,9 @@ class Review
      */
     public function getAverageRating($product)
     {
-        return number_format(round($product->reviews->where('status', 'approved')->avg('rating'), 2), 1);
+        $avgRating = $product->reviews->where('status', 'approved')->avg('rating');
+
+        return number_format(round((float) ($avgRating ?? 0), 2), 1);
     }
 
     /**
@@ -94,8 +96,10 @@ class Review
 
         $totalReviews = $this->getTotalReviews($product);
 
+        $percentage = [];
+
         for ($i = 5; $i >= 1; $i--) {
-            if (! $reviews->isEmpty()) {
+            if (! $reviews->isEmpty() && $totalReviews > 0) {
                 foreach ($reviews as $review) {
                     if ($review->rating == $i) {
                         $percentage[$i] = round(($review->total / $totalReviews) * 100);

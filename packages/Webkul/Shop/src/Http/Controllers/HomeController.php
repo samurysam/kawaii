@@ -46,6 +46,20 @@ class HomeController extends Controller
     }
 
     /**
+     * Loads the all categories directory page for the storefront.
+     *
+     * @return View
+     */
+    public function categories()
+    {
+        $categories = $this->categoryRepository->getVisibleCategoryTree(core()->getCurrentChannel()->root_category_id);
+
+        $categories = CategoryTreeResource::collection($categories);
+
+        return view('shop::categories.directory', compact('categories'));
+    }
+
+    /**
      * Render the home page from unpublished section edits, for the appearance editor.
      *
      * @return View

@@ -54,4 +54,57 @@ class ShopifyProductImportTest extends TestCase
         $this->assertStringContainsString('Sanrio Collection', $productFlat->category_name);
         $this->assertStringContainsString('Blind Box', $productFlat->category_name);
     }
+
+    /**
+     * Test /categories directory page renders successfully.
+     */
+    public function test_categories_directory_page_renders(): void
+    {
+        $response = $this->get('/categories');
+        $response->assertStatus(200);
+        $response->assertSee('Shop by Category');
+        $response->assertSee('Sanrio Collection');
+        $response->assertSee('Popmart Collection');
+    }
+
+    /**
+     * Test /search with sorting parameters renders without PHP 8.4 deprecation errors.
+     */
+    public function test_search_with_sort_params_renders(): void
+    {
+        $response = $this->get('/search?sort=created_at-desc');
+        $response->assertStatus(200);
+
+        $apiResponse = $this->get('/api/products?sort=created_at-desc');
+        $apiResponse->assertStatus(200);
+    }
+
+    /**
+     * Test /page/authenticity and /page/packaging CMS pages render.
+     */
+    public function test_authenticity_and_packaging_cms_pages_render(): void
+    {
+        $authResponse = $this->get('/page/authenticity');
+        $authResponse->assertStatus(200);
+        $authResponse->assertSee('Authenticity Guarantee');
+
+        $packResponse = $this->get('/page/packaging');
+        $packResponse->assertStatus(200);
+        $packResponse->assertSee('Kawaii Safe Packaging');
+    }
+
+    /**
+     * Test Just Landed section has multi-row grid styles and limit 16.
+     */
+    public function test_just_landed_grid_configuration(): void
+    {
+        $section = DB::table('theme_section_translations')
+            ->where('section_id', 207)
+            ->where('locale', 'en')
+            ->first();
+
+        $this->assertNotNull($section);
+        $this->assertStringContainsString('repeat(4, minmax(0, 1fr))', $section->options);
+        $this->assertStringContainsString('limit=16', $section->options);
+    }
 }

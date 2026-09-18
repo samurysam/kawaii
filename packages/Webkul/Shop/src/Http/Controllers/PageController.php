@@ -26,11 +26,16 @@ class PageController extends Controller
      */
     public function view($urlKey)
     {
+        $this->pageRepository->resetModel();
+
         $page = $this->pageRepository
             ->whereHas('channels', function ($query) {
                 $query->where('id', core()->getCurrentChannel()->id);
             })
-            ->whereTranslation('url_key', $urlKey)->first();
+            ->whereTranslation('url_key', $urlKey)
+            ->first();
+
+        $this->pageRepository->resetModel();
 
         if (! $page) {
             $urlRewrite = $this->urlRewriteRepository->findOneWhere([

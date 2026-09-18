@@ -74,6 +74,13 @@ Route::get('/', [HomeController::class, 'index'])
     ->middleware('cache.response');
 
 /**
+ * All categories directory.
+ */
+Route::get('categories', [HomeController::class, 'categories'])
+    ->name('shop.categories.index')
+    ->middleware('cache.response');
+
+/**
  * Appearance editor preview, never cached.
  *
  * The path must stay one segment deep: storefront markup emits relative asset urls such
